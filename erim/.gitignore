@@ -1,0 +1,17 @@
+# ERIM repository (cloned by the makefile)
+/erim/
+
+# Measurement results
+leaks_*.txt
+context_switch_meas_*.txt
+*.csv
+__pycache__/
+
+# Build output
+*.o
+/test_application_pht
+/test_application_btb
+/test_application_stl
+/test_application_ret2spec
+/micro_bench
+/libcache/cacheutils.h

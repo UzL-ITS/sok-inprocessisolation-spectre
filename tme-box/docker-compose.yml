@@ -1,0 +1,19 @@
+services:
+  evaluator:
+    privileged: true
+    build:
+      context: .
+      args:
+        UBUNTU_VERSION: ${UBUNTU_VERSION}
+        UNAME: ${UNAMEC}
+        UID: ${UID}
+        GID: ${GID}
+    environment:
+      - PINNED_CORE=${PINNED_CORE:-23}
+    volumes:
+      - type: bind
+        source: .
+        target: /home/${UNAMEC}/tme-box/
+      - type: bind
+        source: ./kernel-configs
+        target: /kernel-configs

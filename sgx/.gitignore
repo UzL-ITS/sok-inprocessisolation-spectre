@@ -1,0 +1,26 @@
+# Build output of the experiments (see "make clean")
+*.o
+.config_*
+/*_attacker/*/app
+/MeasureBench/app
+# keep the App/ source folders on case-insensitive file systems (macOS, Windows)
+!/*_attacker/*/App/
+!/MeasureBench/App/
+enclave.so
+enclave.signed.so
+**/App/Enclave_u.*
+**/Enclave/Enclave_t.*
+
+# SDK installer and installed SDK
+*.bin
+/sgxsdk/
+
+# Enclave signing keys
+*.pem
+
+# Experiment outputs, logs and collected results
+out.txt
+out_testing.txt
+verify.log
+*.csv
+__pycache__/

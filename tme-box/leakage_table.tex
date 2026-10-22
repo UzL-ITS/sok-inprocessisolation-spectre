@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage{xcolor}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}
+\usepackage{fontawesome5}
+
+\pgfplotsset{compat=1.18}
+
+% --- leakage-result icons -------------------------------------------------
+% No leakage observed -> protective green shield
+% Leakage observed     -> red ghost
+\newcommand{\NoLeak}{\textcolor{green!55!black}{\faIcon{shield-alt}}}
+\newcommand{\Leak}{\textcolor{red!80!black}{\faGhost}}
+
+% String constants the cell mapper compares against
+\def\LeakZero{0}
+\def\LeakOne{1}
+
+\begin{document}
+
+% Data is loaded from leakage_matrix.csv
+\pgfplotstabletypeset[
+  col sep=comma,
+  string type,
+  % Map every cell holding a leakage flag to an icon; cells that are not
+  % "0"/"1" (i.e. the Scenario labels and the header) are left untouched.
+  postproc cell content/.code={%
+    \pgfkeysgetvalue{/pgfplots/table/@cell content}\LeakCell
+    \edef\LeakCell{\LeakCell}%
+    \ifx\LeakCell\LeakOne
+      \pgfkeyssetvalue{/pgfplots/table/@cell content}{\Leak}%
+    \else
+      \ifx\LeakCell\LeakZero
+        \pgfkeyssetvalue{/pgfplots/table/@cell content}{\NoLeak}%
+      \fi
+    \fi
+  },
+  columns={Scenario,PHT,BTB,RSB,STL},
+  columns/Scenario/.style={column name=\textbf{Scenario}, column type=l},
+  columns/PHT/.style={column name=\textbf{PHT}, column type=c},
+  columns/BTB/.style={column name=\textbf{BTB}, column type=c},
+  columns/RSB/.style={column name=\textbf{RSB}, column type=c},
+  columns/STL/.style={column name=\textbf{STL}, column type=c},
+  every head row/.style={before row=\toprule, after row=\midrule},
+  every last row/.style={after row=\bottomrule},
+]{leakage_matrix.csv}
+
+\end{document}
